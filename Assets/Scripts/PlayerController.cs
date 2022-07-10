@@ -10,20 +10,34 @@ public class PlayerController : MonoBehaviour
     public float _speed = 20f;
     public float _jumpForce = 10f;
 
+    float _maxPos = 6;
+    float _minPos = 0;
+    float _posZ;
+
     Rigidbody _rb;
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();    //Rigidbodyæ“¾
+        Physics.gravity *= _gravityScale;   //d—Í‚Ì‘å‚«‚³•ÏX
+        _posZ = transform.position.z;
+
     }
 
     void Update()
     {
-        //Walk(); //“™‘¬ˆÚ“®
+        Walk(); //“™‘¬ˆÚ“®
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+        }
+
+        float inputVertical = Input.GetAxis("Vertical") * 3 * Time.deltaTime;
+
+        if (_posZ < _maxPos && _posZ > _minPos)
+        {
+            _posZ +=  inputVertical;
         }
     }
 
