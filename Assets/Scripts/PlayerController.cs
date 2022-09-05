@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    float _gravityScale = 1.5f;
+    [SerializeField] float _gravityScale = 1.5f;
 
-    public float _speed = 20f;
-    public float _jumpForce = 10f;
+    [SerializeField] float _speed = 20f;
+    [SerializeField] float _jumpForce = 10f;
 
     float _maxPos = 6;
     float _minPos = 0;
@@ -26,34 +26,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Walk(); //等速移動
+        _rb.AddForce(_speed, 0, 0, ForceMode.Force);//等速移動
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Jump();
+            _rb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
         }
 
-        float inputVertical = Input.GetAxis("Vertical") * 3 * Time.deltaTime;
-
+        float inputVertical = Input.GetAxis("Vertical") * 3;
         if (_posZ < _maxPos && _posZ > _minPos)
         {
             _posZ +=  inputVertical;
         }
-    }
-
-    /// <summary>
-    /// キャラクターの動きの処理
-    /// </summary>
-    public void Walk()
-    {
-        _rb.AddForce(_speed, 0, 0,ForceMode.Force);
-    }
-
-    /// <summary>
-    /// ジャンプの処理
-    /// </summary>
-    public void Jump()
-    {
-        _rb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
     }
 }
