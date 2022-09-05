@@ -5,59 +5,43 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-<<<<<<< HEAD
-    [SerializeField] float _gravityScale = 1.5f;
+    Transform _pos;
+    Rigidbody _rb;
 
+    [SerializeField] float _gravityScale = 1.5f;
     [SerializeField] float _speed = 20f;
     [SerializeField] float _jumpForce = 10f;
-=======
-    [SerializeField][Header("速度")]
-    [Tooltip("キャラクターの移動速度")]
-    public float _speed = 20f;
 
-    [SerializeField][Header("ジャンプ力")]
-    [Tooltip("キャラクターのジャンプ力")]
-    public float _jumpForce = 10f;
->>>>>>> 6ce10e6ca0de20e230447535169f8233a64e418a
-
-    [SerializeField]
-    [Header("重力スケール")]
-    [Tooltip("重力の倍率")]
-    public float _gravityScale = 1.5f;
-
-    public float[] _posZ = [0, 3, 6];
-
+    int _indexZ = 0;
+    float[] _posZ = { 0, 3, 6 };
     bool _isOnGround;
 
-    Rigidbody _rb;
+    float _maxHP;   //最大HP
+    float _playerHP;    //現在のプレイヤーのHP
+    public float PlayerHP{ get => _playerHP; set => _playerHP = value; }
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();    //Rigidbody取得
-        Physics.gravity *= _gravityScale;   //重力の大きさ変更
+        _rb = GetComponent<Rigidbody>();
+        _pos = GetComponent<Transform>();
+        _pos.position = new Vector3(0, 0, _posZ[_indexZ]);
+        Physics.gravity *= _gravityScale;
         _isOnGround = true;
+        _maxHP = _playerHP;
     }
 
     void Update()
     {
-<<<<<<< HEAD
-        _rb.AddForce(_speed, 0, 0, ForceMode.Force);//等速移動
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _rb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
-        }
-
-        float inputVertical = Input.GetAxis("Vertical") * 3;
-        if (_posZ < _maxPos && _posZ > _minPos)
-        {
-            _posZ +=  inputVertical;
-        }
-    }
-=======
         Walk(); //等速移動
         Jump(); //ジャンプ
 
+        if (Input.GetKeyDown(KeyCode.W)) 
+        {
+            if(_indexZ > 0 && _indexZ < 2)
+            {
+                _pos.position = new Vector3(0, 0, _posZ[_indexZ++]);
+            }
+        };
     }
 
     /// <summary>
@@ -73,7 +57,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Jump()
     {
-        
         if (Input.GetKeyDown(KeyCode.Space) && _isOnGround)
         {
             _rb.AddForce(0, _jumpForce, 0, ForceMode.Impulse);
@@ -88,5 +71,4 @@ public class PlayerController : MonoBehaviour
             _isOnGround = true;
         }
     }
->>>>>>> 6ce10e6ca0de20e230447535169f8233a64e418a
 }
